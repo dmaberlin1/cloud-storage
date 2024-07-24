@@ -1,15 +1,15 @@
-create table if not exists public.employees
-(
-    id         bigint not null
-        primary key,
-    first_name varchar(50),
-    last_name  varchar(50),
---     hire_date  timestamp,
-    salary     numeric(10, 2)
+CREATE TABLE users (
+                       id serial PRIMARY KEY,
+                       username VARCHAR(255) NOT NULL UNIQUE,
+                       first_name VARCHAR(50),
+                       last_name VARCHAR(50),
+                       password VARCHAR(255) NOT NULL,
+                       email VARCHAR(255) NOT NULL UNIQUE,
+                       role VARCHAR(255) NOT NULL
 );
 
-alter table public.employees
-    owner to postgres;
+-- Создание индекса для поля username
+CREATE INDEX idx_username ON users(username);
 
-create index if not exists idx_employees_last_name
-    on public.employees (last_name);
+-- Создание индекса для поля email
+CREATE INDEX idx_email ON users(email);

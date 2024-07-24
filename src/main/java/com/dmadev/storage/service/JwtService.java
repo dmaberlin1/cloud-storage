@@ -73,7 +73,7 @@ public class JwtService {
      */
     private <T> T extractClaim(String token, Function<Claims,T> claimsResolvers) {
         final Claims claims=extractAllClaims(token);
-        return null;
+        return claimsResolvers.apply(claims);
     }
 
     /**
@@ -84,7 +84,9 @@ public class JwtService {
      * @return токен
      */
     private String generateToken(Map<String,Object> extraClaims,UserDetails userDetails){
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+100_000*60*24))
                 .signWith(getSigingKey(), SignatureAlgorithm.HS256).compact();
@@ -117,7 +119,11 @@ public class JwtService {
      * @return данные
      */
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSigingKey()).build().parseClaimsJws(token).getBody();
+        return Jwts.parser()
+                .setSigningKey(getSigingKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     /**
@@ -130,5 +136,4 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-//eof
 }

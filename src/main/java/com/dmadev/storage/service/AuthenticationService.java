@@ -1,5 +1,6 @@
 package com.dmadev.storage.service;
 
+import com.dmadev.storage.api.constant.enums.Role;
 import com.dmadev.storage.dto.JwtAuthenticationResponse;
 import com.dmadev.storage.dto.SignInRequest;
 import com.dmadev.storage.dto.SignUpRequest;
@@ -32,6 +33,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
+                .role(Role.ROLE_USER)
                 .build();
         userService.create(user);
         var jwt = jwtService.generateToken(user);
@@ -55,5 +57,4 @@ public class AuthenticationService {
 
     }
 
-    //eof
 }

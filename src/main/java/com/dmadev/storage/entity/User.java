@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-@ToString
+//@ToString
 @Entity
 @Builder
 @Getter
@@ -50,7 +49,7 @@ public class User implements UserDetails {
     @Column(name = "last_name",length = 50)
     private String lastName;
 
-    @Column(name = "password",nullable = false,length = 255)
+    @Column(name = "password",nullable = false)
     private String password;
 
     @Column(name="email",unique = true,nullable = false)
@@ -61,13 +60,6 @@ public class User implements UserDetails {
     @Column(name = "role",nullable = false)
     private Role role;
 
-    public User(Long id, String firstName, String lastName, String email,String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        setEmail(email);
-    }
 
 
     @Override
@@ -100,30 +92,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
-
-    // Переопределенный билдер для проверки email
-    public static class UserBuilder {
-        private String email;
-
-        public UserBuilder email(String email) {
-            if (!EmailValidator.isEmail(email)) {
-                throw new IllegalArgumentException("Invalid email format");
-            }
-            this.email = email;
-            return this;
-        }
-
-        public User build() {
-            User user = new User();
-            user.setId(this.id);
-            user.setPassword(this.password);
-            user.setFirstName(this.firstName);
-            user.setLastName(this.lastName);
-            user.setEmail(this.email);  // Проверка email
-            return user;
-        }
-    }
-
 
     public void setEmail(String email){
       if(EmailValidator.isEmail(email)){

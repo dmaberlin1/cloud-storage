@@ -34,7 +34,7 @@ public class UserService {
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует")
+            throw new RuntimeException("Пользователь с таким email уже существует");
         }
         return save(user);
     }
@@ -53,7 +53,7 @@ public class UserService {
 
     /**
      * Получение пользователя по имени пользователя
-     * <p>
+     * <p>3
      * Нужен для Spring Security
      *
      * @return пользователь
